@@ -4,8 +4,6 @@ import { useState } from 'react'
 export default function ReviewGateScreen({ token, onComplete }) {
   const [reviewText, setReviewText] = useState('')
   const [reviewRating, setReviewRating] = useState(0)
-  const [reviewSubmitting, setReviewSubmitting] = useState(false)
-  const [reviewError, setReviewError] = useState('')
   const [reviewReady, setReviewReady] = useState(false)
 
   const MIN_WORDS = 11
@@ -27,21 +25,9 @@ export default function ReviewGateScreen({ token, onComplete }) {
     setReviewReady(n > 0 && countWords(reviewText) >= MIN_WORDS)
   }
 
-  const handleReview = async () => {
+  const handleReview = () => {
     if (!reviewReady) return
-    setReviewSubmitting(true)
-    setReviewError('')
-    try {
-      const res = await fetch(`/order/api/checkout/${token}/review`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rating: reviewRating, review_text: reviewText }),
-      })
-      const data = await res.json()
-      if (res.ok) { onComplete() }
-      else { setReviewError(data.error || 'Something went wrong.') }
-    } catch (e) { setReviewError('Network error. Please try again.') }
-    finally { setReviewSubmitting(false) }
+    onComplete({ rating: reviewRating, review_text: reviewText })
   }
 
   const wc = countWords(reviewText)
@@ -80,13 +66,11 @@ export default function ReviewGateScreen({ token, onComplete }) {
         </span>
       </div>
 
-      {reviewError && <p style={{ fontSize: '12px', color: '#ff6b6b', marginBottom: '12px' }}>{reviewError}</p>}
       <button
         onClick={handleReview}
-        disabled={reviewSubmitting}
         style={{ display: 'block', width: '100%', fontSize: '13px', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', textAlign: 'center', padding: '16px', borderRadius: '6px', border: 'none', background: reviewReady ? '#C8A88A' : 'rgba(200,168,138,0.15)', color: reviewReady ? '#050505' : 'rgba(200,168,138,0.4)', cursor: reviewReady ? 'pointer' : 'not-allowed', transition: 'all 0.3s' }}
       >
-        {reviewSubmitting ? 'Submitting...' : reviewReady ? 'Start My Next Order →' : 'Complete both fields to unlock'}
+        {reviewReady ? 'Start My Next Order →' : 'Complete both fields to unlock'}
       </button>
     </div>
   )

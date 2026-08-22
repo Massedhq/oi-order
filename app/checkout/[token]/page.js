@@ -22,6 +22,7 @@ export default function ExistingCustomerCheckoutPage() {
   const [repName, setRepName] = useState(null)
   const [repDiscount, setRepDiscount] = useState(0)
   const [supplies, setSupplies] = useState('none')
+  const [pendingReview, setPendingReview] = useState(null)
 
   const [shipData, setShipData] = useState({ address:'', address2:'', city:'', state:'', zip:'' })
   const [billSameAsShip, setBillSameAsShip] = useState(true)
@@ -126,6 +127,8 @@ export default function ExistingCustomerCheckoutPage() {
           dose: selectedDose,
           rep_name: repName,
           rep_discount: repDiscount,
+          review_rating: pendingReview?.rating,
+          review_text: pendingReview?.review_text,
           note: noteLine,
           ship_address:  shipData.address,
           ship_address2: shipData.address2,
@@ -192,7 +195,10 @@ export default function ExistingCustomerCheckoutPage() {
         {screen==='review' && (
           <ReviewGateScreen
             token={token}
-            onComplete={() => setScreen('dosage')}
+            onComplete={(reviewData) => {
+              setPendingReview(reviewData)
+              setScreen('dosage')
+            }}
           />
         )}
 

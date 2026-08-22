@@ -12,7 +12,7 @@ export async function POST(request, { params }) {
 
   try {
     const body = await request.json()
-    const { sourceId, supplies, amount, product, dose, note,
+    const { sourceId, supplies, amount, product, dose, note, review_rating, review_text,
             ship_address, ship_address2, ship_city, ship_state, ship_zip,
             bill_address, bill_city, bill_state, bill_zip } = body
 
@@ -43,7 +43,7 @@ export async function POST(request, { params }) {
       }
     }
 
-    if (signup.review_required && !signup.review_submitted) {
+    if (signup.review_required && !signup.review_submitted && !review_rating) {
       return NextResponse.json({ error: 'Please submit your review before ordering again.' }, { status: 403 })
     }
 
@@ -100,7 +100,10 @@ export async function POST(request, { params }) {
         order_count      = ${newOrderCount},
         last_order_date  = NOW(),
         review_required  = true,
-        review_submitted = false,
+        review_submitted = true,
+        review_rating    = ${review_rating || signup.review_rating},
+        review_text      = ${review_text || signup.review_text},
+        review_submitted_at = NOW(),
         booster          = ${finalProduct},
         current_dosage   = ${finalDose},
         ship_address     = ${finalShipAddress},
