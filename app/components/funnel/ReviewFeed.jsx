@@ -12,7 +12,7 @@ export default function ReviewFeed() {
   const [reviews, setReviews] = useState([])
 
   useEffect(() => {
-      fetch('/api/reviews')
+      fetch('/order/api/reviews')
       .then(r => r.json())
       .then(d => {
         if (d.reviews) {

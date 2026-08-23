@@ -17,7 +17,7 @@ export default function OrderLookupPage() {
     setLoading(true)
     setError('')
     try {
-      const res = await fetch('/api/order-lookup', {
+      const res = await fetch('/order/api/order-lookup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim() }),
@@ -44,8 +44,7 @@ export default function OrderLookupPage() {
         </div>
 
         <div style={{ position: 'relative', height: '260px', marginTop: '20px', borderRadius: '16px', overflow: 'hidden' }}>
-          <img src="/images/hero.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />
-          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 40%, #050505 100%)' }} />
+          <img src="/order/images/hero.png" alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top center', display: 'block' }} />          <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 40%, #050505 100%)' }} />
         </div>
 
         <div style={{ padding: '0 4px', marginTop: '-24px', position: 'relative' }}>

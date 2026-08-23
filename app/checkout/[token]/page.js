@@ -36,7 +36,7 @@ export default function ExistingCustomerCheckoutPage() {
   const squareReady = useRef(false)
 
   useEffect(() => {
-    fetch(`/api/checkout/${token}`)
+     fetch(`/order/api/checkout/${token}`)
       .then(r => r.json())
       .then(d => {
         if (d.error) { setNotFound(true); setLoading(false); return }
@@ -116,7 +116,7 @@ export default function ExistingCustomerCheckoutPage() {
       }
       const billing = billSameAsShip ? shipData : billData
       const noteLine = `OI Body Chemistry - ${selectedProduct || ''} - ${signup?.name || ''}`.substring(0, 45)
-      const res = await fetch(`/api/checkout/${token}/pay`, {
+      const res = await fetch(`/order/api/checkout/${token}/pay`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
